@@ -1,6 +1,6 @@
-package io.hoon.springtoyprojectbasic.service.security.provider;
+package io.hoon.springtoyprojectbasic.security.provider;
 
-import io.hoon.springtoyprojectbasic.service.security.service.AccountContext;
+import io.hoon.springtoyprojectbasic.security.service.AccountContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

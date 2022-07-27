@@ -1,4 +1,4 @@
-package io.hoon.springtoyprojectbasic.service.security.service;
+package io.hoon.springtoyprojectbasic.security.service;
 
 import io.hoon.springtoyprojectbasic.domain.Account;
 import org.springframework.security.core.GrantedAuthority;
