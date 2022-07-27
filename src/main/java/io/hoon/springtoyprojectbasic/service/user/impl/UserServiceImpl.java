@@ -1,8 +1,8 @@
-package io.hoon.springtoyprojectbasic.service.impl;
+package io.hoon.springtoyprojectbasic.service.user.impl;
 
 import io.hoon.springtoyprojectbasic.domain.Account;
 import io.hoon.springtoyprojectbasic.repository.UserRepository;
-import io.hoon.springtoyprojectbasic.service.UserService;
+import io.hoon.springtoyprojectbasic.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

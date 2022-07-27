@@ -1,4 +1,4 @@
-package io.hoon.springtoyprojectbasic.service;
+package io.hoon.springtoyprojectbasic.service.user;
 
 import io.hoon.springtoyprojectbasic.domain.Account;
 
