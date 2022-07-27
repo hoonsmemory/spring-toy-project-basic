@@ -1,4 +1,4 @@
-package io.hoon.springtoyprojectbasic.service.security;
+package io.hoon.springtoyprojectbasic.service.security.service;
 
 import io.hoon.springtoyprojectbasic.domain.Account;
 import io.hoon.springtoyprojectbasic.repository.UserRepository;

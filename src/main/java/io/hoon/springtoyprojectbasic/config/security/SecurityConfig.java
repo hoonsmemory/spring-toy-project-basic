@@ -1,6 +1,6 @@
 package io.hoon.springtoyprojectbasic.config.security;
 
-import io.hoon.springtoyprojectbasic.service.security.CustomUserDetailsService;
+import io.hoon.springtoyprojectbasic.service.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
