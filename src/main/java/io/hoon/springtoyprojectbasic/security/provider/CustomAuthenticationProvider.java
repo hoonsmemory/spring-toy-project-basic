@@ -1,9 +1,11 @@
 package io.hoon.springtoyprojectbasic.security.provider;
 
+import io.hoon.springtoyprojectbasic.security.common.FormWebAuthenticationDetails;
 import io.hoon.springtoyprojectbasic.security.service.AccountContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,12 +35,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("BadCredentialsException !!");
         }
 
+        FormWebAuthenticationDetails formWebAuthenticationDetails = (FormWebAuthenticationDetails) authentication.getDetails();
+        String securityKey = formWebAuthenticationDetails.getSecuretKey();
+
+        if(securityKey == null || !("secret".equals(securityKey))) {
+            throw new InsufficientAuthenticationException("InsufficientAuthenticationException !!");
+        }
+
+
         //최종 인증 성공 후 정보를 전달한다. (권한정보, Account 객체, 패스워드 정보, Authenticated : true)
-        UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(accountContext.getAccount(), null, accountContext.getAuthorities());
-
-
-        return authenticationToken;
+        return new UsernamePasswordAuthenticationToken(accountContext.getAccount(), null, accountContext.getAuthorities());
     }
 
     /*
