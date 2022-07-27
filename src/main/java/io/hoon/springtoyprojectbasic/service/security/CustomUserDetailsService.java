@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    DB연동을 통해 인증처리가 이뤄질 수 있도록 구현
+ */
 @Slf4j
 @Service("userDetailsService")
 @RequiredArgsConstructor
