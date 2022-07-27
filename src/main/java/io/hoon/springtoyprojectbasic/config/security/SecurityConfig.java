@@ -34,14 +34,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         //각 페이지 권한 설정
-        http.authorizeRequests()
-            .antMatchers("/", "/users", "user/login/**").permitAll()
-            .antMatchers("/mypage").hasRole("USER")
-            .antMatchers("/messages").hasRole("MANAGER")
-            .antMatchers("/config").hasRole("ADMIN")
-            .anyRequest().authenticated()
+        http
+                .authorizeRequests()
+                .antMatchers("/", "/users", "user/login/**").permitAll()
+                .antMatchers("/mypage").hasRole("USER")
+                .antMatchers("/messages").hasRole("MANAGER")
+                .antMatchers("/config").hasRole("ADMIN")
+                .anyRequest().authenticated()
             .and()
-            .formLogin();
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login_proc")
+                .defaultSuccessUrl("/")
+                .permitAll();
 
         //유저 인증 처리
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
