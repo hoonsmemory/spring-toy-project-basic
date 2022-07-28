@@ -1,5 +1,7 @@
 package io.hoon.springtoyprojectbasic.controller.login;
 
+import io.hoon.springtoyprojectbasic.domain.Account;
+import org.h2.engine.Mode;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,5 +38,16 @@ public class LoginController {
         }
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/denied")
+    public String accessDenied(@RequestParam(value = "exception", required = false) String exception,
+                               Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account account = (Account) authentication.getPrincipal();
+        model.addAttribute("username", account.getUsername());
+        model.addAttribute("exception", exception);
+
+        return "user/login/denied";
     }
 }

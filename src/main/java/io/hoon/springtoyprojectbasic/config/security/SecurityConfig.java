@@ -1,6 +1,7 @@
 package io.hoon.springtoyprojectbasic.config.security;
 
 import io.hoon.springtoyprojectbasic.security.common.FormAuthenticationDetailsSource;
+import io.hoon.springtoyprojectbasic.security.handler.CustomAccessDeniedHandler;
 import io.hoon.springtoyprojectbasic.security.handler.CustomAuthenticationFailureHandler;
 import io.hoon.springtoyprojectbasic.security.handler.CustomAuthenticationSuccessHandler;
 import io.hoon.springtoyprojectbasic.security.provider.CustomAuthenticationProvider;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.util.ArrayList;
@@ -54,13 +56,23 @@ public class SecurityConfig {
                 .authenticationDetailsSource(formAuthenticationDetailsSource)
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
-                .permitAll();
+                .permitAll()
+            .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler())
+        ;
 
         //유저 인증 처리
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.authenticationProvider(authenticationProvider());
 
         return http.build();
+    }
+
+    private AccessDeniedHandler accessDeniedHandler() {
+        CustomAccessDeniedHandler customAccessDeniedHandler = new CustomAccessDeniedHandler();
+        customAccessDeniedHandler.setErrorPage("/denied");
+        return customAccessDeniedHandler;
     }
 
     @Bean
