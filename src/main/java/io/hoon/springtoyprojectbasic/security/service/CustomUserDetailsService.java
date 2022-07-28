@@ -1,6 +1,6 @@
 package io.hoon.springtoyprojectbasic.security.service;
 
-import io.hoon.springtoyprojectbasic.domain.Account;
+import io.hoon.springtoyprojectbasic.domain.entity.Account;
 import io.hoon.springtoyprojectbasic.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

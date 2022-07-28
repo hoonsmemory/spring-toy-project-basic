@@ -1,7 +1,7 @@
 package io.hoon.springtoyprojectbasic.controller.user;
 
-import io.hoon.springtoyprojectbasic.domain.Account;
-import io.hoon.springtoyprojectbasic.domain.AccountDto;
+import io.hoon.springtoyprojectbasic.domain.entity.Account;
+import io.hoon.springtoyprojectbasic.domain.dto.AccountDto;
 import io.hoon.springtoyprojectbasic.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

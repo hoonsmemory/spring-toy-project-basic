@@ -1,6 +1,6 @@
 package io.hoon.springtoyprojectbasic.service.user.impl;
 
-import io.hoon.springtoyprojectbasic.domain.Account;
+import io.hoon.springtoyprojectbasic.domain.entity.Account;
 import io.hoon.springtoyprojectbasic.repository.UserRepository;
 import io.hoon.springtoyprojectbasic.service.user.UserService;
 import lombok.RequiredArgsConstructor;

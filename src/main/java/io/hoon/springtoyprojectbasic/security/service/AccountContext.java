@@ -1,6 +1,6 @@
 package io.hoon.springtoyprojectbasic.security.service;
 
-import io.hoon.springtoyprojectbasic.domain.Account;
+import io.hoon.springtoyprojectbasic.domain.entity.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

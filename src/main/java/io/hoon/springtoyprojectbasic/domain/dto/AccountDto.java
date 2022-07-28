@@ -1,4 +1,4 @@
-package io.hoon.springtoyprojectbasic.domain;
+package io.hoon.springtoyprojectbasic.domain.dto;
 
 import lombok.Data;
 

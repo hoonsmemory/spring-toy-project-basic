@@ -1,4 +1,4 @@
-package io.hoon.springtoyprojectbasic.controller.domain;
+package io.hoon.springtoyprojectbasic.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

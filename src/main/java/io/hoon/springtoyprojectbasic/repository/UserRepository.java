@@ -1,6 +1,6 @@
 package io.hoon.springtoyprojectbasic.repository;
 
-import io.hoon.springtoyprojectbasic.domain.Account;
+import io.hoon.springtoyprojectbasic.domain.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

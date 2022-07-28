@@ -1,8 +1,6 @@
 package io.hoon.springtoyprojectbasic.controller.login;
 
-import io.hoon.springtoyprojectbasic.domain.Account;
-import org.h2.engine.Mode;
-import org.springframework.security.authentication.AuthenticationProvider;
+import io.hoon.springtoyprojectbasic.domain.entity.Account;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;

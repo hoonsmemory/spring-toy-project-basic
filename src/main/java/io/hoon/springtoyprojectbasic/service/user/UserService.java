@@ -1,6 +1,6 @@
 package io.hoon.springtoyprojectbasic.service.user;
 
-import io.hoon.springtoyprojectbasic.domain.Account;
+import io.hoon.springtoyprojectbasic.domain.entity.Account;
 
 public interface UserService {
 
