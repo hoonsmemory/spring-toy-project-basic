@@ -1,6 +1,7 @@
 package io.hoon.springtoyprojectbasic.config.security;
 
 import io.hoon.springtoyprojectbasic.security.common.FormAuthenticationDetailsSource;
+import io.hoon.springtoyprojectbasic.security.handler.CustomAuthenticationFailureHandler;
 import io.hoon.springtoyprojectbasic.security.handler.CustomAuthenticationSuccessHandler;
 import io.hoon.springtoyprojectbasic.security.provider.CustomAuthenticationProvider;
 import io.hoon.springtoyprojectbasic.security.service.CustomUserDetailsService;
@@ -32,18 +33,16 @@ import java.util.List;
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
-
     private final FormAuthenticationDetailsSource formAuthenticationDetailsSource;
-
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         //각 페이지 권한 설정
         http
                 .authorizeRequests()
-                .antMatchers("/", "/users", "user/login/**").permitAll()
+                .antMatchers("/", "/users", "user/login/**", "/login*").permitAll()
                 .antMatchers("/mypage").hasRole("USER")
                 .antMatchers("/messages").hasRole("MANAGER")
                 .antMatchers("/config").hasRole("ADMIN")
@@ -54,6 +53,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login_proc")
                 .authenticationDetailsSource(formAuthenticationDetailsSource)
                 .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
                 .permitAll();
 
         //유저 인증 처리

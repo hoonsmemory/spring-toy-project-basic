@@ -30,8 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         Account account = userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("UsernameNotFoundException!!"));
 
-        log.info("Success find Account {}", account);
-
         List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(account.getRole()));
 
