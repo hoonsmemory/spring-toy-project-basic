@@ -4,7 +4,7 @@
 <div th:fragment="header">
     <nav class="navbar navbar-dark sticky-top bg-dark ">
         <div class="container">
-            <a class="text-light" href="#"><h4>Toy Project</h4></a>
+            <a class="text-light" th:href="@{/}"><h4>Toy Project</h4></a>
             <ul class="nav justify-content-end">
                 <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link text-light" th:href="@{/login}">로그인</a></li>
                 <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link text-light" th:href="@{/users}">회원가입</a></li>

@@ -1,5 +1,7 @@
 package io.hoon.springtoyprojectbasic.config.security;
 
+import io.hoon.springtoyprojectbasic.security.common.FormAuthenticationDetailsSource;
+import io.hoon.springtoyprojectbasic.security.handler.CustomAuthenticationSuccessHandler;
 import io.hoon.springtoyprojectbasic.security.provider.CustomAuthenticationProvider;
 import io.hoon.springtoyprojectbasic.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,9 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    private final AuthenticationDetailsSource authenticationDetailsSource;
+    private final FormAuthenticationDetailsSource formAuthenticationDetailsSource;
+
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,8 +52,8 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login_proc")
-                .authenticationDetailsSource(authenticationDetailsSource)
-                .defaultSuccessUrl("/")
+                .authenticationDetailsSource(formAuthenticationDetailsSource)
+                .successHandler(customAuthenticationSuccessHandler)
                 .permitAll();
 
         //유저 인증 처리
