@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="ROLE_HIERARCHY")
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
