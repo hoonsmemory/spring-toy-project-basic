@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
     DB연동을 통해 인증처리가 이뤄질 수 있도록 구현
@@ -30,11 +31,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         Account account = userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("UsernameNotFoundException!!"));
 
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(account.getRole()));
+        List<GrantedAuthority> collect = account.getUserRoles()
+                .stream()
+                .map(userRole -> userRole.getRoleName())
+                .collect(Collectors.toSet())
+                .stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-        AccountContext accountContext = new AccountContext(account, roles);
-
-        return accountContext;
+        //List<GrantedAuthority> collect = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return new AccountContext(account, collect);
     }
 }
