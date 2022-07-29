@@ -1,6 +1,6 @@
 package io.hoon.springtoyprojectbasic.security.metadatasource;
 
-import io.hoon.springtoyprojectbasic.service.security.SecurityResourceService;
+import io.hoon.springtoyprojectbasic.service.security.impl.SecurityResourceServiceImpl;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -17,11 +17,11 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
     //RequestMatcher : Request URL, ConfigAttribute : 권한 정보를 담고있는 타입
     private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> requestMap;
 
-    private SecurityResourceService securityResourceService;
+    private SecurityResourceServiceImpl securityResourceService;
 
-    public UrlFilterInvocationSecurityMetadataSource(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap, SecurityResourceService securityResourceService) {
+    public UrlFilterInvocationSecurityMetadataSource(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap, SecurityResourceServiceImpl securityResourceServiceImpl) {
         this.requestMap = resourceMap;
-        this.securityResourceService = securityResourceService;
+        this.securityResourceService = securityResourceServiceImpl;
     }
 
     @Override

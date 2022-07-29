@@ -3,7 +3,7 @@ package io.hoon.springtoyprojectbasic.config.security;
 import io.hoon.springtoyprojectbasic.security.factory.UrlResourceMapFactoryBean;
 import io.hoon.springtoyprojectbasic.security.filter.PermitAllFilter;
 import io.hoon.springtoyprojectbasic.security.metadatasource.UrlFilterInvocationSecurityMetadataSource;
-import io.hoon.springtoyprojectbasic.service.security.SecurityResourceService;
+import io.hoon.springtoyprojectbasic.service.security.impl.SecurityResourceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -11,12 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
     private String[] permitAllPattern = {"/", "/home", "/users", "/login"};
 
-    private final SecurityResourceService securityResourceService;
+    private final SecurityResourceServiceImpl securityResourceService;
 
     @Bean
     public PermitAllFilter permitAllFilter() throws Exception {
@@ -61,9 +62,26 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
         return accessDecisionManager;
     }
 
-    //RolVoter : SecurityConfig("ROLE_ADMIN") 와 같은 값을 가지고 인가처리를 하는 클래스
+    //RolVoter : SecurityConfig("ROLE_ADMIN") 와 같은 값을 가지고 인가처리를 하는 클래스 (상위, 하위 개념이 없다.)
+    //RoleHierarchyVoter : 계층형으로 권한이 높으면 그 이하의 권한을 가진 페이지의 접근이 가능하다.
     private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
-        return Arrays.asList(new RoleVoter());
+        List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
+        accessDecisionVoters.add(roleHierarchyVoter());
+
+        return accessDecisionVoters;
+    }
+
+    @Bean
+    public AccessDecisionVoter<? extends Object> roleHierarchyVoter() {
+
+        RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
+        return roleHierarchyVoter;
+    }
+
+    @Bean
+    public RoleHierarchyImpl roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        return roleHierarchy;
     }
 
     //필터를 직접 만들어 정적 파일을 무시하는게 패스되었다.
