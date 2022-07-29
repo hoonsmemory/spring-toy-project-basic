@@ -2,6 +2,7 @@ package io.hoon.springtoyprojectbasic.config.security;
 
 import io.hoon.springtoyprojectbasic.security.common.FormAuthenticationDetailsSource;
 import io.hoon.springtoyprojectbasic.security.factory.UrlResourceMapFactoryBean;
+import io.hoon.springtoyprojectbasic.security.filter.PermitAllFilter;
 import io.hoon.springtoyprojectbasic.security.handler.CustomAccessDeniedHandler;
 import io.hoon.springtoyprojectbasic.security.handler.CustomAuthenticationFailureHandler;
 import io.hoon.springtoyprojectbasic.security.handler.CustomAuthenticationSuccessHandler;
@@ -46,16 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     private final SecurityResourceService securityResourceService;
+    private String[] permitAllResourceService = {"/", "/login", "/user/login/**"};
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 //설정 시 구체적인 경로가 먼저 오고 그것 보다 큰 범위의 경로가 뒤에 오도록 해야한다.
                 .authorizeRequests()
-                .antMatchers("/mypage").hasRole("USER")
-                .antMatchers("/messages").hasRole("MANAGER")
-                .antMatchers("/config").hasRole("ADMIN")
-                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()//인증된 사용자가 아니면 어떠한 자원에도 접근이 되지 않는다는 의미의 권한으로 정의
             .and()
                 .formLogin()
@@ -109,20 +107,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+    public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
 
         /*
            인가처리를 할 수 있도록 filter interceptor 추가
          */
-        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+        PermitAllFilter permitAllFilter = new PermitAllFilter(permitAllResourceService);
         //URL 권한 정보를 추출하는 SecurityMetadataSource 적용
-        filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
+        permitAllFilter.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
         //접근 결정 관리자 : 3가지 타입이 있다.주로 기본 전략인 하나만 승인되도 허용되는 AffirmativeBased를 사용
-        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
+        permitAllFilter.setAccessDecisionManager(affirmativeBased());
         //인증 관리자 : 권한 필터 같은 경우 인가하기 전 인증된 사용자가 있는지, 인증된 사용자인지 검사가 필요
-        filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
+        permitAllFilter.setAuthenticationManager(authenticationManagerBean());
 
-        return filterSecurityInterceptor;
+        return permitAllFilter;
     }
 
     private AccessDecisionManager affirmativeBased() {
@@ -137,7 +135,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() throws Exception {
-        return new UrlFilterInvocationSecurityMetadataSource(UrlResourceMapFactoryBean().getObject());
+        return new UrlFilterInvocationSecurityMetadataSource(UrlResourceMapFactoryBean().getObject(), securityResourceService);
     }
 
     private UrlResourceMapFactoryBean UrlResourceMapFactoryBean() {

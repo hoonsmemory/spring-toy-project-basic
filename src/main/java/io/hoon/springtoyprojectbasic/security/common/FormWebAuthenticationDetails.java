@@ -6,14 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 
 public class FormWebAuthenticationDetails extends WebAuthenticationDetails {
 
-    private String securetKey;
+    private String secretKey;
 
     public FormWebAuthenticationDetails(HttpServletRequest request) {
         super(request);
-        securetKey = request.getParameter("secret_key");
+        secretKey = request.getParameter("secret_key");
     }
 
-    public String getSecuretKey() {
-        return securetKey;
+    public String getSecretKey() {
+        return secretKey;
     }
 }

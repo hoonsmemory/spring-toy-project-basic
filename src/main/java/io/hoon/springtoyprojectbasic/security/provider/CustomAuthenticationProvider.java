@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -23,6 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         authentication에는 사용자가 입력한 ID, Password 등 입력한 정보가 담겨있다.
      */
     @Override
+    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         String username = authentication.getName();
@@ -31,15 +33,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         //추가적인 검증을 위한 정보를 가져온다.
         AccountContext accountContext = (AccountContext) userDetailsService.loadUserByUsername(username);
 
-        if(! passwordEncoder.matches(password, accountContext.getPassword())) {
-            throw new BadCredentialsException("BadCredentialsException !!");
+        if (!passwordEncoder.matches(password, accountContext.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
         }
 
-        FormWebAuthenticationDetails formWebAuthenticationDetails = (FormWebAuthenticationDetails) authentication.getDetails();
-        String securityKey = formWebAuthenticationDetails.getSecuretKey();
-
-        if(securityKey == null || !("secret".equals(securityKey))) {
-            throw new InsufficientAuthenticationException("InsufficientAuthenticationException !!");
+        String secretKey = ((FormWebAuthenticationDetails) authentication.getDetails()).getSecretKey();
+        if (secretKey == null || !secretKey.equals("secret")) {
+            throw new IllegalArgumentException("Invalid Secret");
         }
 
 
