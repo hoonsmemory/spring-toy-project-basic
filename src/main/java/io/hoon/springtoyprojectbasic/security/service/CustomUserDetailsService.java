@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /*
@@ -29,15 +30,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Account account = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException("UsernameNotFoundException!!"));
+                .orElseThrow(()-> new UsernameNotFoundException("No user found with username: " + username));
 
-        List<GrantedAuthority> collect = account.getUserRoles()
+        Set<String> userRoles = account.getUserRoles()
                 .stream()
                 .map(userRole -> userRole.getRoleName())
-                .collect(Collectors.toSet())
-                .stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
-        //List<GrantedAuthority> collect = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        List<GrantedAuthority> collect = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
         return new AccountContext(account, collect);
     }
 }

@@ -1,7 +1,6 @@
 package io.hoon.springtoyprojectbasic.security.metadatasource;
 
 import io.hoon.springtoyprojectbasic.service.security.SecurityResourceService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
