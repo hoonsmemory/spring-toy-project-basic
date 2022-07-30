@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IpAccessVoter implements AccessDecisionVoter<Object> {
 
+    private List<String> accessIpList;
     private final SecurityResourceService securityResourceService;
 
     @Override
@@ -34,7 +35,9 @@ public class IpAccessVoter implements AccessDecisionVoter<Object> {
         WebAuthenticationDetails details = (WebAuthenticationDetails)authentication.getDetails();
         String remoteAddress = details.getRemoteAddress();
 
-        List<String> accessIpList = securityResourceService.getAccessIpList();
+        if(accessIpList == null) {
+            accessIpList = securityResourceService.getAccessIpList();
+        }
 
         for (String accessIp : accessIpList) {
             if(remoteAddress.equals(accessIp)) {
