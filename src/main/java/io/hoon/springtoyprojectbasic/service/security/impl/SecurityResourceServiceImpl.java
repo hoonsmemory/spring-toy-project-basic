@@ -1,6 +1,7 @@
 package io.hoon.springtoyprojectbasic.service.security.impl;
 
 import io.hoon.springtoyprojectbasic.domain.entity.Resource;
+import io.hoon.springtoyprojectbasic.repository.AccessIpRepository;
 import io.hoon.springtoyprojectbasic.repository.ResourceRepository;
 import io.hoon.springtoyprojectbasic.service.security.SecurityResourceService;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +13,15 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class SecurityResourceServiceImpl implements SecurityResourceService {
 
     private final ResourceRepository resourceRepository;
+
+    private final AccessIpRepository accessIpRepository;
 
     @Override
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceList() {
@@ -36,5 +41,15 @@ public class SecurityResourceServiceImpl implements SecurityResourceService {
         });
 
         return result;
+    }
+
+    @Override
+    public List<String> getAccessIpList() {
+        List<String> accessIpList = accessIpRepository.findAll()
+                .stream()
+                .map(accessIp -> accessIp.getIpAddress())
+                .collect(Collectors.toList());
+
+        return accessIpList;
     }
 }

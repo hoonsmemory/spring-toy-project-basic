@@ -9,4 +9,6 @@ import java.util.List;
 public interface SecurityResourceService {
 
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceList();
+
+    List<String> getAccessIpList();
 }
