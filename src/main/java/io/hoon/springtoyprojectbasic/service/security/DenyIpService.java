@@ -6,5 +6,11 @@ import java.util.List;
 
 public interface DenyIpService {
 
-    List<DenyIp> getAccessIp();
+    List<DenyIp> getDenyIpList();
+
+    DenyIp getDenyIp(Long id);
+
+    void createDenyIp(DenyIp denyIp);
+
+    void deleteDenyIp(Long id);
 }

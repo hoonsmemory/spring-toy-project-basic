@@ -3,7 +3,8 @@ package io.hoon.springtoyprojectbasic.config.security;
 import io.hoon.springtoyprojectbasic.security.factory.UrlResourceMapFactoryBean;
 import io.hoon.springtoyprojectbasic.security.filter.PermitAllFilter;
 import io.hoon.springtoyprojectbasic.security.metadatasource.UrlFilterInvocationSecurityMetadataSource;
-import io.hoon.springtoyprojectbasic.security.vote.IpDenyVoter;
+import io.hoon.springtoyprojectbasic.security.vote.DenyIpVoter;
+import io.hoon.springtoyprojectbasic.service.security.SecurityResourceService;
 import io.hoon.springtoyprojectbasic.service.security.impl.SecurityResourceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,10 +70,15 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
         List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
         //먼저 심사가 필요할 경우 add하는 위치를 위로 한다.
-        accessDecisionVoters.add(new IpDenyVoter(securityResourceService));
+        accessDecisionVoters.add(denyIpVoter(securityResourceService));
         accessDecisionVoters.add(roleHierarchyVoter());
 
         return accessDecisionVoters;
+    }
+
+    @Bean
+    public DenyIpVoter denyIpVoter(SecurityResourceService securityResourceService) {
+        return new DenyIpVoter(securityResourceService);
     }
 
     @Bean

@@ -2,6 +2,7 @@ package io.hoon.springtoyprojectbasic.security.vote;
 
 import io.hoon.springtoyprojectbasic.service.security.SecurityResourceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -11,8 +12,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
-public class IpDenyVoter implements AccessDecisionVoter<Object> {
+public class DenyIpVoter implements AccessDecisionVoter<Object> {
 
     private List<String> denyIpList;
     private final SecurityResourceService securityResourceService;
@@ -47,5 +49,11 @@ public class IpDenyVoter implements AccessDecisionVoter<Object> {
 
         //다음 filter에서 심사를 해야하기 때문에 ACCESS_ABSTAIN 으로 결과를 줘야한다.
         return ACCESS_ABSTAIN;
+    }
+
+    public void reload() {
+        denyIpList.clear();
+        denyIpList = securityResourceService.getDenyIpList();
+
     }
 }
