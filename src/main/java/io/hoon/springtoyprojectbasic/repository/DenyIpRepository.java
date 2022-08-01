@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DenyIpRepository extends JpaRepository<DenyIp, Long> {
 
-    DenyIp findByIpAddress(String IpAddress);
 }
