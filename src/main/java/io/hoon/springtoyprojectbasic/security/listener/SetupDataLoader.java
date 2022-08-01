@@ -31,7 +31,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AccessIpRepository accessIpRepository;
+    private final DenyIpRepository denyIpRepository;
 
     private static AtomicInteger count = new AtomicInteger(0);
 
@@ -44,8 +44,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         }
 
         setupSecurityResources();
-
-        setupAccessIpData();
 
         alreadySetup = true;
     }
@@ -128,15 +126,5 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         RoleHierarchy childRoleHierarchy = roleHierarchyRepository.save(roleHierarchy);
         childRoleHierarchy.setParentName(parentRoleHierarchy);
-    }
-
-    private void setupAccessIpData() {
-        AccessIp byIpAddress = accessIpRepository.findByIpAddress("127.0.0.1");
-        if (byIpAddress == null) {
-            AccessIp accessIp = AccessIp.builder()
-                    .ipAddress("127.0.0.1")
-                    .build();
-            accessIpRepository.save(accessIp);
-        }
     }
 }

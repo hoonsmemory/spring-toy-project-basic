@@ -10,5 +10,5 @@ public interface SecurityResourceService {
 
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceList();
 
-    List<String> getAccessIpList();
+    List<String> getDenyIpList();
 }

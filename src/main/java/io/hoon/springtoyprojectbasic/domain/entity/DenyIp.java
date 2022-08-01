@@ -6,13 +6,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "ACCESS_IP")
+@Table(name = "DENY_IP")
 @Data
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AccessIp implements Serializable {
+public class DenyIp implements Serializable {
 
     @Id
     @GeneratedValue
