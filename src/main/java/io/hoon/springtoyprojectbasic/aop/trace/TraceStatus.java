@@ -1,4 +1,4 @@
-package io.hoon.springtoyprojectbasic.trace;
+package io.hoon.springtoyprojectbasic.aop.trace;
 
 /**
  *  로그의 상태 정보를 나타내는 클래스

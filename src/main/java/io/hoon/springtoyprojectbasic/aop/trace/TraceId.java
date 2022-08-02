@@ -1,4 +1,4 @@
-package io.hoon.springtoyprojectbasic.trace;
+package io.hoon.springtoyprojectbasic.aop.trace;
 
 import java.util.UUID;
 
