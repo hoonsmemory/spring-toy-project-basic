@@ -51,29 +51,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-                //설정 시 구체적인 경로가 먼저 오고 그것 보다 큰 범위의 경로가 뒤에 오도록 해야한다.
-                .authorizeRequests()
-                .anyRequest().authenticated()//인증된 사용자가 아니면 어떠한 자원에도 접근이 되지 않는다는 의미의 권한으로 정의
+                .authorizeRequests() //설정 시 구체적인 경로가 먼저 오고 그것 보다 큰 범위의 경로가 뒤에 오도록 해야한다.
+                .anyRequest().authenticated()//인증된 사용자가 아니면 어떠한 자원에도 접근이 되지 않는다.
             .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login_proc")
-                .authenticationDetailsSource(formAuthenticationDetailsSource)
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureHandler(customAuthenticationFailureHandler)
+                .authenticationDetailsSource(formAuthenticationDetailsSource)
                 .permitAll()
             .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")) //인증실패 시 처리
                 .accessDeniedPage("/denied")
-                .accessDeniedHandler(accessDeniedHandler())
+                .accessDeniedHandler(accessDeniedHandler()) //인가실패 시 처리
             .and()
                 //기존에 만들어진 FilterSecurityInterceptor 앞에 위치해서 내가 만든 필터를 먼저 거칠 수 있도록 한다.
                 //사실상 기존에 제공되던 것은 무용지물된다.
                 //.addFilterBefore(permitAllFilter, FilterSecurityInterceptor.class)
-                .addFilterAt(permitAllFilter, FilterSecurityInterceptor.class)
+                .addFilterBefore(permitAllFilter, FilterSecurityInterceptor.class)
         ;
-        http.csrf().disable();
+
     }
 
     @Bean
